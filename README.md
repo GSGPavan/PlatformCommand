@@ -20,3 +20,18 @@ docker start containerId
 
 docker push GSGPavan/PlatformService
 -> This pushes the PlatformService image to the dockerhub whose account is "GSGPavan"
+
+
+# K8S commands :
+
+kubectl apply -f PlatformService-depl.yaml
+-> This creates the deployment. Creating the pods and running the containers with the specified image
+
+kubectl get deployments
+-> This will give the list of deployments
+
+kubectl get pods
+-> This will give the list of pods running
+
+kubectl delete deployment deploymentname
+-> This will delete the deployment whose name is deploymentname
