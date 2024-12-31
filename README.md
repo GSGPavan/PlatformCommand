@@ -30,6 +30,9 @@ kubectl apply -f PlatformService-depl.yaml
 kubectl get deployments
 -> This will give the list of deployments
 
+kubectl get services
+-> This will get the list of services
+
 kubectl get pods
 -> This will give the list of pods running
 
