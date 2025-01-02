@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PlatformService.Data;
 using PlatformService.Dtos;
 using PlatformService.Models;
+using PlatformService.Server;
 
 namespace PlatformService.Controllers
 {
@@ -10,19 +10,19 @@ namespace PlatformService.Controllers
     [ApiController]
     public class PlatformsController : ControllerBase
     {
-        private readonly IPlatformRepo _platformRepo;
+        private readonly IPlatformServer _platformServer;
         private readonly IMapper _mapper;
 
-        public PlatformsController(IPlatformRepo platformRepo, IMapper mapper)
+        public PlatformsController(IPlatformServer platformServer, IMapper mapper)
         {
-            _platformRepo = platformRepo;
+            _platformServer = platformServer;
             _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
         {
-            IEnumerable<Platform> platforms = _platformRepo.GetPlatforms();
+            IEnumerable<Platform> platforms = _platformServer.GetPlatforms();
             IEnumerable<PlatformReadDto> platformReadDtos = _mapper.Map<IEnumerable<PlatformReadDto>>(platforms);
 
             return Ok(platformReadDtos);
@@ -31,7 +31,7 @@ namespace PlatformService.Controllers
         [HttpGet("{id}", Name = nameof(GetPlatformById))]
         public ActionResult<PlatformReadDto> GetPlatformById(int id)
         {
-            Platform? platform = _platformRepo.GetPlatformById(id);
+            Platform? platform = _platformServer.GetPlatformById(id);
 
             if (platform == null)
             {
@@ -47,8 +47,7 @@ namespace PlatformService.Controllers
         {
             Platform platform = _mapper.Map<Platform>(platformCreateDto);
 
-            _platformRepo.CreatePlatform(platform);
-            _platformRepo.SaveChanges();
+            _platformServer.CreatePlatform(platform);
 
             PlatformReadDto platformReadDto = _mapper.Map<PlatformReadDto>(platform);
 
