@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metaData:
+  name: CommandService-Deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: CommandService
+  template:
+    metaData:
+      labels:
+        app: CommandService
+    spec:
+      containers:
+        - name: CommandService
+          image: GSGPavan/CommandService:latest
+---
+apiVersion: apps/v1
+kind: Service
+metaData:
+  name: CommandService-ClusterIp
+spec:
+  type: ClusterIp
+  selector:
+    app: CommandService
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

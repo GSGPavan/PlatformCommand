@@ -8,6 +8,6 @@ namespace PlatformService.Server
 
         Platform? GetPlatformById(int id);
 
-        void CreatePlatform(Platform platform);
+        Task CreatePlatform(Platform platform);
     }
 }

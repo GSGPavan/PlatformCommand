@@ -43,11 +43,11 @@ namespace PlatformService.Controllers
 
         [Route("CreatePlatform")]
         [HttpPost]
-        public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
+        public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto platformCreateDto)
         {
             Platform platform = _mapper.Map<Platform>(platformCreateDto);
 
-            _platformServer.CreatePlatform(platform);
+            await _platformServer.CreatePlatform(platform);
 
             PlatformReadDto platformReadDto = _mapper.Map<PlatformReadDto>(platform);
 

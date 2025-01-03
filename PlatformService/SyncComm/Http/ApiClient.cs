@@ -17,8 +17,9 @@ namespace PlatformService.SyncComm.Http
             HttpMethod httpMethod, object? request = null)
         {
             HttpResponseMessage? httpResponse = null;
+            TResponse? response;
 
-            if(httpMethod == HttpMethod.Get)
+            if (httpMethod == HttpMethod.Get)
             {
                 httpResponse = await _httpClient.GetAsync(url);
             }
@@ -31,7 +32,17 @@ namespace PlatformService.SyncComm.Http
             }
 
             string stringResponse = await httpResponse.Content.ReadAsStringAsync();
-            TResponse? response = JsonSerializer.Deserialize<TResponse>(stringResponse);
+
+            string? responseType = httpResponse.Content.Headers.ContentType?.MediaType;
+
+            if(responseType == "text/plain")
+            {
+                response = (TResponse)(object)stringResponse;
+            }
+            else
+            {
+                response = JsonSerializer.Deserialize<TResponse>(stringResponse);
+            }
 
             return response;
         }
