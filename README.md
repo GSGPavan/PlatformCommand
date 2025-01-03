@@ -38,3 +38,6 @@ kubectl get pods
 
 kubectl delete deployment deploymentname
 -> This will delete the deployment whose name is deploymentname
+
+kubectl rollout restart deployment deploymentname
+-> This will restart the pods by taking the image from the docker hub
