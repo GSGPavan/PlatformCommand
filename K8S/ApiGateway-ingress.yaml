@@ -1,0 +1,27 @@
+apiVersion:
+kind: Ingress
+metaData:
+  name: ApiGateway-Ingress
+  annotations:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: acme.com
+      http:
+        paths:
+          - path: /api/platforms
+            pathType: Prefix
+            backend:
+              service:
+                name: PlatformService-ClusterIp
+                port:
+                  number: 80
+          - path: /api/c/platforms
+            pathType: Prefix
+            backend:
+              service:
+                name: CommandService-ClusterIp
+                port:
+                  number: 80

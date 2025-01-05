@@ -15,3 +15,16 @@ spec:
       containers:
         - name: PlatformService
           image: GSGPavan/PlatformService:latest
+---
+apiVersion: apps/v1
+kind: Service
+metaData:
+  name: PlatformService-ClusterIp
+spec:
+  type: ClusterIp
+  selector:
+    app: PlatformService
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
