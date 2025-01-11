@@ -41,3 +41,6 @@ kubectl delete deployment deploymentname
 
 kubectl rollout restart deployment deploymentname
 -> This will restart the pods by taking the image from the docker hub
+
+kubectl create secret generic mssql --from-literal=SA_PASSWORD="somepassword"
+->This will create a generic secret in kubernetes whose key is "SA_PASSWORD" and value is "somepassword"

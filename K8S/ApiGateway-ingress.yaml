@@ -1,6 +1,6 @@
-apiVersion:
+apiVersion: networking.k8s.io/v1
 kind: Ingress
-metaData:
+metadata:
   name: ApiGateway-Ingress
   annotations:
     annotations:
