@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using PlatformService.AsyncComm;
 using PlatformService.Data;
 using PlatformService.Server;
 using PlatformService.SyncComm.Http;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 IWebHostEnvironment env = builder.Environment;
@@ -22,6 +24,18 @@ else if(env.IsProduction())
     builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(
         configuration.GetConnectionString("PlatformSql")));
 }
+ConnectionFactory connectionFactory = new ConnectionFactory()
+{
+    HostName = configuration["RabbitMq:Host"],
+    Port = int.Parse(configuration["RabbitMq:port"])
+};
+
+IConnection rabbitMqConnection = await connectionFactory.CreateConnectionAsync();
+builder.Services.AddSingleton<IConnection>(serviceProvider =>
+{
+    return rabbitMqConnection;
+});
+builder.Services.AddTransient<IMessageBusClient, MessageBusClient>();
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddScoped<IPlatformServer, PlatformServer>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
