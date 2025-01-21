@@ -1,6 +1,8 @@
-﻿using RabbitMQ.Client;
+﻿using PlatformService.Helper;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PlatformService.AsyncComm
 {
@@ -41,7 +43,8 @@ namespace PlatformService.AsyncComm
             {
                 await _channel.ExchangeDeclareAsync(exchangeName, exchangeType, durable: true);
 
-                string messageString = JsonSerializer.Serialize<T>(message);
+                string messageString = JsonSerializer.Serialize<T>(message, JsonOptions.Default);
+
                 byte[] body = Encoding.UTF8.GetBytes(messageString);
 
                 await _channel.BasicPublishAsync(exchangeName, routingKey, body);
