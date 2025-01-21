@@ -1,4 +1,6 @@
-﻿namespace PlatformService.Dtos
+﻿using PlatformService.Enum;
+
+namespace PlatformService.Dtos
 {
     public class PlatformPublishedDto
     {
@@ -6,6 +8,6 @@
 
         public string Name { get; set; }
 
-        public string Event { get; set; }
+        public EventType Event { get; set; }
     }
 }

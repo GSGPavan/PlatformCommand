@@ -8,12 +8,14 @@ namespace PlatformService.AsyncComm
     {
         private readonly IConfiguration _configuration;
         private readonly IConnection _rabbitMqConnection;
+        private readonly ILogger<MessageBusClient> _logger;
         private IChannel? _channel;
 
-        public MessageBusClient(IConfiguration configuration, IConnection rabbitMqConnection) 
+        public MessageBusClient(IConfiguration configuration, IConnection rabbitMqConnection, ILogger<MessageBusClient> logger) 
         {
             _configuration = configuration;
             _rabbitMqConnection = rabbitMqConnection;
+            _logger = logger;
         }
 
         private async Task CreateChannel()
@@ -45,6 +47,7 @@ namespace PlatformService.AsyncComm
                 await _channel.BasicPublishAsync(exchangeName, routingKey, body);
 
                 isSent = true;
+                _logger.LogInformation($"message sent to exchange {exchangeName}");
             }
 
             return isSent;

@@ -2,6 +2,7 @@ using AutoMapper;
 using PlatformService.AsyncComm;
 using PlatformService.Data;
 using PlatformService.Dtos;
+using PlatformService.Enum;
 using PlatformService.Models;
 using PlatformService.SyncComm.Http;
 
@@ -14,15 +15,17 @@ namespace PlatformService.Server
         private readonly IApiClient _apiClient;
         private readonly IMessageBusClient _messageBusClient;
         private readonly IMapper _mapper;
+        private readonly ILogger<PlatformServer> _logger;
 
         public PlatformServer(IConfiguration configuration, IPlatformRepo platformRepo, IApiClient apiClient, 
-            IMessageBusClient messageBusClient, IMapper mapper)
+            IMessageBusClient messageBusClient, IMapper mapper, ILogger<PlatformServer> logger)
         {
             _configuration = configuration;
             _platformRepo = platformRepo;
             _apiClient = apiClient;
             _messageBusClient = messageBusClient;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public IEnumerable<Platform> GetPlatforms()
@@ -47,11 +50,11 @@ namespace PlatformService.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Cannot call command service due to {ex.Message}");
+                _logger.LogError($"Cannot call command service due to {ex.Message}");
             }
 
             PlatformPublishedDto platformPublishedDto = _mapper.Map<PlatformPublishedDto>(platform);
-            platformPublishedDto.Event = "PlatformPublished";
+            platformPublishedDto.Event = EventType.PlatformPublished;
 
             try
             {
@@ -62,7 +65,7 @@ namespace PlatformService.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Cannot send Platform due to {ex.Message}");
+                _logger.LogError($"Cannot send Platform due to {ex.Message}");
             }
             
         }
