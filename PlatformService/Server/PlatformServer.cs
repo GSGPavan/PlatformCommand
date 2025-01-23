@@ -59,9 +59,9 @@ namespace PlatformService.Server
             try
             {
                 await _messageBusClient.SendMessage<PlatformPublishedDto>(platformPublishedDto,
-                    _configuration["PlatformPublished:ExchangeName"]!,
-                    _configuration["PlatformPublished:ExchangeType"]!,
-                    _configuration["PlatformPublished:RoutingKey"]!);
+                    _configuration["RabbitMq:ExchangeName"]!,
+                    _configuration["RabbitMq:ExchangeType"]!,
+                    _configuration["RabbitMq:RoutingKey"]!);
             }
             catch (Exception ex)
             {
