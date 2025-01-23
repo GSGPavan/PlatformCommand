@@ -13,5 +13,7 @@ namespace CommandService.Data
         bool PlatformExists(int platformId);
 
         bool SaveChanges();
+
+        bool DoesExternalPlatformExists(int externalId);
     }
 }
