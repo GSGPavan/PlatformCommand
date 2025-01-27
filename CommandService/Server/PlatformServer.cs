@@ -20,6 +20,13 @@ namespace CommandService.Server
             }
 
             _platformRepo.CreatePlatform(platform);
+
+            _platformRepo.SaveChanges();
+        }
+
+        public bool DoesExternalPlatformExists(int externalId)
+        {
+            return _platformRepo.DoesExternalPlatformExists(externalId);
         }
 
         public Platform? GetPlatformById(int platformId)

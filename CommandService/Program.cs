@@ -38,6 +38,8 @@ builder.Services.AddSingleton<IConnection>(serviceProvider => rabbitMqConnection
 
 var app = builder.Build();
 
+PrepDb.PrepPopulation(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
