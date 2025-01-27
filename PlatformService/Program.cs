@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PlatformService.AsyncComm;
 using PlatformService.Data;
 using PlatformService.Server;
+using PlatformService.SyncComm.Grpc;
 using PlatformService.SyncComm.Http;
 using RabbitMQ.Client;
 using Serilog;
@@ -14,7 +15,7 @@ Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 builder.Host.UseSerilog();
 
 // Add services to the container.
-
+builder.Services.AddGrpc();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,8 +32,8 @@ else if(env.IsProduction())
 
 ConnectionFactory connectionFactory = new ConnectionFactory()
 {
-    HostName = configuration["RabbitMq:Host"],
-    Port = int.Parse(configuration["RabbitMq:port"])
+    HostName = configuration["RabbitMq:Host"]!,
+    Port = int.Parse(configuration["RabbitMq:port"]!)
 };
 
 IConnection rabbitMqConnection = await connectionFactory.CreateConnectionAsync();
@@ -61,6 +62,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapGrpcService<GrpcPlatformController>();
+app.MapGet("/protos/platforms.proto", async context => await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto")));
 
 app.MapControllers();
 

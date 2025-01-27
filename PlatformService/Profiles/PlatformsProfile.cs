@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Grpc;
 using PlatformService.Dtos;
 using PlatformService.Models;
 
@@ -11,6 +12,8 @@ namespace PlatformService.Profiles
             CreateMap<Platform, PlatformReadDto>();
             CreateMap<PlatformCreateDto, Platform>();
             CreateMap<Platform, PlatformPublishedDto>();
+            CreateMap<Platform, GrpcPlatform>()
+                .ForMember(dest => dest.PlatformId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }
