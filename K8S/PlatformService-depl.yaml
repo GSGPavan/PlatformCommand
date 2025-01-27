@@ -25,6 +25,11 @@ spec:
   selector:
     app: PlatformService
   ports:
-    - protocol: TCP
+    - name: platformhttp
+      protocol: TCP
       port: 80
       targetPort: 80
+    - name: platformgrpc
+      protocol: TCP
+      port: 666
+      targetPort: 666
