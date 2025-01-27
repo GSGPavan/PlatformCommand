@@ -44,3 +44,13 @@ kubectl rollout restart deployment deploymentname
 
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="somepassword"
 ->This will create a generic secret in kubernetes whose key is "SA_PASSWORD" and value is "somepassword"
+
+# rabbit mq
+Rabbit Mq is used to communicate between microservices asynchronously. It has different types of exchanges like Direct, FanOut, Topic & Header.
+-> Direct Exchange delivers messages to queues based on an exact match between the message's routing key and the queue's binding key.
+-> Fanout Exchange fanout exchange broadcasts messages to all queues bound to it, ignoring the routing key.
+-> Topic Exchange routes messages to queues based on a pattern match between the routing key and a queue's binding pattern, using wildcards (* for one word and # for multiple words).
+-> Headers Exchange routes messages based on header attributes instead of the routing key, requiring an exact match between the message's headers and the binding's header conditions.
+
+# GRPC
+gRPC (Google Remote Procedure Call) is one way to communicate between microservices synchronously. It is faster than HTTP because it uses Protobuf (a binary format) instead of JSON.
